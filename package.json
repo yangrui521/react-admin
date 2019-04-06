@@ -1,15 +1,20 @@
 {
-  "name": "xxx",
+  "name": "react-admin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "antd": "3.12.3",
+    "react-router-dom": "4.3.1",
+    "prop-types": "15.6.2",
+    "axios": "0.18.0",
+    "store": "2.0.12"
   },
-  "depenDencies":{
-    "react-app-rewired":"1.6.2",
-    "babel-plugin-import":"1.11.0"
+  "devDependencies": {
+    "react-app-rewired": "1.6.2",
+    "babel-plugin-import": "1.11.0"
   },
 
   "scripts": {
@@ -26,5 +31,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "http://localhost:5000"
 }

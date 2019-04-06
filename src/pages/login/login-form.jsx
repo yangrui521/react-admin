@@ -7,6 +7,9 @@ const FormItem = Form.Item
 
 
 class LoginForm extends Component{
+  static propTypes = {
+    login: PropTypes.func.isRequired
+  }
   handleSubmit = (event) => {
    event.preventDefault()
 
@@ -15,8 +18,8 @@ class LoginForm extends Component{
      if(!err){
        //收集数据
        const values = this.props.form.getFieldsValue()
-       console.log(values)
-
+       // console.log(values)
+      this.props.login(values)
      }else{
 
      }
@@ -46,7 +49,7 @@ class LoginForm extends Component{
               getFieldDecorator('username',{
               initialValue:'admin',
               rules : [
-                {whitespace:true,required:true,massage:'必须输入用户名'},
+                {whitespace:true,required:true,message:'必须输入用户名'},
                 {min:4,massage:'长度不能小于4'}
               ]
             })(
