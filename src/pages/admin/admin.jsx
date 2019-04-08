@@ -3,7 +3,7 @@ import {Switch,Route,Redirect} from 'react-router-dom'
 import {Row,Col} from 'antd'
 import MemoryUtil from '../../uril/MemoryUtil'
 import './admin.less'
-import LeftNav from '../../components/left-nav/left-nav'
+import LeftNav from '../../components/left-nav/left-nav-reduce'
 import Footer from '../../components/footer/footer'
 import Header from '../../components/header/header'
 import Category from '../category/category'
@@ -33,17 +33,18 @@ export default class Admin extends Component {
         </Col>
         <Col span={20} className='main'>
           <Header/>
-          <div className="content">
+          <div className="content" style={{margin:10}}>
+            {/*注册子路由组件*/}
             <Switch>
               <Route path='/home' component={Home}/>
               <Route path='/category' component={Category}/>
-              <Route path='/bar' component={Bar}/>
-              <Route path='/line' component={Line}/>
-              <Route path='/pie' component={Pie}/>
+              <Route path='/charts/bar' component={Bar}/>
+              <Route path='/charts/line' component={Line}/>
+              <Route path='/charts/pie' component={Pie}/>
               <Route path='/product' component={Product}/>
               <Route path='/role' component={Role}/>
               <Route path='/user' component={User}/>
-
+              <Redirect to="/home"/>{/*只要与上面不匹配就自动选择到home*/}
 
             </Switch>
           </div>

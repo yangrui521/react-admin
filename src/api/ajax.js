@@ -13,7 +13,7 @@ export default function ajax(url,data={},type='GET') {
     }else{
       promise = axios.post(url,data)
     }
-    promise.then(response=>{
+   promise.then(response=>{
       //请求成功
       resolve(response.data)
     }).catch(error=>{

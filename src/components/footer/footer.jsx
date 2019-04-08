@@ -7,7 +7,7 @@ export default class Footer extends Component {
   render() {
     return (
       <div className="footer">
-        Footer
+        推荐使用谷歌浏览器访问
       </div>
     )
   }
