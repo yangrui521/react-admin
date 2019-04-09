@@ -28,8 +28,8 @@ export const getWeather = (city)=>{
 export const reqCategories = (parentId = '0')=> ajax('/manage/category/list',{parentId},'GET')
 
 //添加分类
-export const addCategory = (categoryName,parentId)=>ajax('/manage/category/add',{categoryName,parentId},'POST')
+export const reqAddCategory = (categoryName,parentId)=>ajax('/manage/category/add',{categoryName,parentId},'POST')
 //更新分类
-export const updateCategory = ({categoryId,categoryName})=>ajax('/manage/category/update',{categoryId,categoryName},'POST')
+export const reqUpdateCategory = ({categoryId,categoryName})=>ajax('/manage/category/update',{categoryId,categoryName},'POST')
 //根据分类id获取
-export const getCategory = (categoryId)=>ajax('/manage/category/info',{categoryId},'GET')
+export const reqGetCategory = (categoryId)=>ajax('/manage/category/info',{categoryId},'GET')
