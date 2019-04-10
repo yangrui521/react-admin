@@ -20,7 +20,7 @@ class LeftNav extends Component {
         ))
       }else {//item有子集  才会调用递归
         const path = this.props.location.pathname
-        const cItem = item.children.find(cItem => cItem.key===path)
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
         if(cItem){
           const openKey = item.openKey
           this.openKey = openKey
@@ -86,7 +86,10 @@ class LeftNav extends Component {
     // console.log('LeftNav render()', menuNodes)
 
     // 得到请求的路由路径
-    const selectKey = this.props.location.pathname
+    let selectKey = this.props.location.pathname
+    if(selectKey.indexOf('/product/')===0){
+      selectKey ='/product'
+    }
     const openKey = this.openKey
 
     return (

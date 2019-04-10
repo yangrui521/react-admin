@@ -33,3 +33,28 @@ export const reqAddCategory = (categoryName,parentId)=>ajax('/manage/category/ad
 export const reqUpdateCategory = ({categoryId,categoryName})=>ajax('/manage/category/update',{categoryId,categoryName},'POST')
 //根据分类id获取
 export const reqGetCategory = (categoryId)=>ajax('/manage/category/info',{categoryId},'GET')
+
+//获取商品分页的列表
+//pageNum 当前第几页(从1开始的)  pageSize 每页有几条数据
+export const reqProducts = (pageNum,pageSize) =>ajax('/manage/product/list',{pageNum,pageSize})
+
+//搜索商品的分页列表
+//searchType : productDesc||pageName
+//searchName  : 搜索的关键字
+export const reqSearchProducts = ({pageSize,pageNum,searchType,searchName})=>ajax('/manage/product/search',{
+  pageSize,
+  pageNum,
+  [searchType] : searchName
+})
+//更新指定的商品状态
+export const reqUpdateProductStatus = ({productId,status})=>ajax('/manage/product/updateStatus',{productId,status},'POST')
+
+
+
+
+
+
+
+
+
+

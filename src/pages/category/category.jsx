@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Card,Table,Button,Icon,message,Modal} from 'antd'
-import {reqCategories, reqUpdateCategory} from '../../api'
+import {reqAddCategory, reqCategories, reqUpdateCategory} from '../../api'
 import LinkButton from '../../components/link-button/link'
 import UpdateForm from './update-form'
+import AddForm from './add-form'
 
 export default class Category extends Component {
   state = {
@@ -13,12 +14,13 @@ export default class Category extends Component {
     loading : false
   }
   //发送异步请求获取
-  getCategories = async () =>{
-
+  getCategories = async (parentId) =>{
+  //更新loding
     this.setState({
       loading : true
     })
-    const {parentId}= this.state
+    //优先使用指定的id  没有的话就是用当前的parentId
+    parentId = parentId || this.state.parentId
     //异步获取数据列表
     const result = await reqCategories(parentId)
     this.setState({
@@ -48,7 +50,23 @@ export default class Category extends Component {
     })
   }
   //添加分类
-  addCategory=()=>{
+  addCategory=async ()=>{
+    //获取数据
+    const {parentId,categoryName} = this.form.getFieldsValue()
+    //重置状态
+    this.setState({
+      showStatus : 0
+    })
+    //重置表单项
+    this.form.resetFields()
+    //异步执行ajax请求，传入参数
+    const result =await reqAddCategory(categoryName,parentId)
+    if (result.status === 0){
+      if (parentId === '0' || parentId === this.state.parentId){
+        this.getCategories()
+      }
+
+    }
 
   }
   showUpdate = (category)=>{
@@ -75,6 +93,26 @@ export default class Category extends Component {
     }
 
   }
+  componentWillMount() {
+    this.columns = [
+      {
+        title: '分类名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '操作',
+        width: 300,
+        render: (category) => (
+          <span>
+            <LinkButton onClick={()=>this.showUpdate(category)}>修改分类</LinkButton>
+
+            {this.state.parentId==='0' ?  <LinkButton onClick={()=>this.showSubCates(category)}>查看子分类</LinkButton> : null}
+
+          </span>
+        )
+      }];
+  }
+
   componentDidMount() {
     this.getCategories()
   }
@@ -93,7 +131,7 @@ export default class Category extends Component {
     const {categories,subCategories,parentId,parentName,loading,showStatus} = this.state
     const title = parentId === '0'? '一级分类列表' :(
       <span>
-        <a href="javascript:">一级列表</a>
+        <LinkButton onClick={this.showCategories}>一级列表</LinkButton>
         <Icon type='arrow-right'/>
         <span>{parentName}</span>
       </span>
@@ -104,31 +142,15 @@ export default class Category extends Component {
       </Button>
     );
 
-    const columns = [
-      {
-        title: '分类名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '操作',
-        width: 300,
-        render: (category) => (
-          <span>
-            <LinkButton onClick={()=>this.showUpdate(category)}>修改分类</LinkButton>
 
-            {this.state.parentId==='0' ?  <LinkButton onClick={()=>this.showSubCates(category)}>查看子分类</LinkButton> : null}
-
-          </span>
-        )
-      }];
 
     return(
       <Card title={title} extra={extra}>
         <Table
           bordered={true}
           dataSource={parentId==='0' ? categories:subCategories}
-          columns={columns}
-          pagination={{pageSize:2,showQuickJumper:true,showSizeChanger:true}}
+          columns={this.columns}
+          pagination={{pageSize:5,showQuickJumper:true,showSizeChanger:true}}
           rowKey='_id'
           loading={loading}
         />
@@ -138,7 +160,7 @@ export default class Category extends Component {
           onOk={this.addCategory}
           onCancel={()=>this.setState({showStatus:0})}
         >
-          <p>添加分类</p>
+          <AddForm categoryName={categories} parentId={parentId} setForm={form =>this.form =form}/>
         </Modal>
         <Modal
           title="修改分类"
