@@ -32,7 +32,7 @@ export const reqAddCategory = (categoryName,parentId)=>ajax('/manage/category/ad
 //更新分类
 export const reqUpdateCategory = ({categoryId,categoryName})=>ajax('/manage/category/update',{categoryId,categoryName},'POST')
 //根据分类id获取
-export const reqGetCategory = (categoryId)=>ajax('/manage/category/info',{categoryId},'GET')
+export const reqGetCategory = (categoryId)=>ajax('/manage/category/info',{categoryId})
 
 //获取商品分页的列表
 //pageNum 当前第几页(从1开始的)  pageSize 每页有几条数据

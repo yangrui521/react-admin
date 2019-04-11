@@ -4,6 +4,7 @@ import {Card,List,Icon} from 'antd'
 import LinkButton from '../../components/link-button/link'
 import {reqGetCategory} from '../../api/index'
 
+
 const {Item} = List
 
 export default class ProductDetail extends Component {
@@ -14,27 +15,41 @@ export default class ProductDetail extends Component {
   //获取当前商品所属分类
   getCategoryNames = async ()=>{
     //得到商品的分类id
-    const {pCategoryId,categoryId} = this.props.location.state
+    const { pCategoryId,categoryId} = this.props.location.state.product
+    //    const result = await reqGetCategory(categoryId)
+    //     const cName1 = result.data.name
+    // console.log(cName1)
+
+    // console.log(pCategoryId,categoryId)
 
     if(pCategoryId === 0){
-      //一级分类的名字
-      const result = await reqGetCategory(categoryId)
-      const cName1 =result.data.name
+    //   //一级分类的名字
+       const result = await reqGetCategory(categoryId)
+       console.log(result)
+       const cName1 =result.data.name
 
-      this.setState({
-        cName1
-      })
-    }else {
+       this.setState({
+         cName1
+       })
+
+     }else {
       //二级分类名字
-      const result1 = await reqGetCategory(pCategoryId)
-      const result2 = await reqGetCategory(categoryId)
-      const cName1 =result1.name
-      const cName2 =result2.name
-      this.setState({
-        cName1,
-        cName2
-      })
-    }
+      /*let result1 = await reqGetCategory(pCategoryId)
+      const result2 = await reqGetCategory(categoryId)*/
+       const [result1, result2] = await Promise.all([reqGetCategory(pCategoryId), reqGetCategory(categoryId)])
+       console.log(result1 ,result2)
+
+
+      const cName1 =result1.data.name
+
+       const cName2 =result2.data.name
+       this.setState({
+         cName1,
+         cName2
+       })
+
+     }
+
 
   }
 
@@ -44,7 +59,7 @@ export default class ProductDetail extends Component {
 
   render() {
     //从location中取出state中的product
-    const {name,desc,price} = this.props.location.state
+    const {name,desc,price} = this.props.location.state.product
     const {cName1,cName2}= this.state
     const title = (
       <span>
@@ -73,6 +88,7 @@ export default class ProductDetail extends Component {
           </Item>
           <Item>
             <span className='left'>所属分类:</span>
+            {/*<span>电脑-->电脑11</span>*/}
             <span>{cName1}--->{cName2}</span>
           </Item>
         </List>

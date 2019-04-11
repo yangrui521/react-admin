@@ -8,7 +8,7 @@ export default class ProductList extends Component {
   /*
   *商品路由组件*/
   state={
-    products:[],
+    products:[],//当前页的数组 不是产品的总数量
     total: 0, //总商品数量
     searchType : 'productName',//搜索类型 按名称搜 productName 按描述搜 productDesc
     searchName: ''
@@ -43,7 +43,8 @@ export default class ProductList extends Component {
     const result = await reqUpdateProductStatus({productId,status})
     message.success('更新成功')
     if(result.status===0){
-      //必须获取当前页面的商品列表
+      //监听回调需要得到pageNum
+      //异步获取当前页面的商品列表
       this.getProducts(this.pageNum)
     }
 
@@ -52,6 +53,7 @@ export default class ProductList extends Component {
   
   //发送ajax请求就在这个里面
   componentDidMount() {
+    //调用分页的接口请求函数
     this.getProducts(1)
   }
 
@@ -103,7 +105,7 @@ export default class ProductList extends Component {
         render :(product)=> {
           return (
             <span>
-              <LinkButton onClick={()=>this.props.history.push('/product/detail',product)}>详情</LinkButton>
+              <LinkButton onClick={()=>this.props.history.push('/product/detail',{product})}>详情</LinkButton>
               <LinkButton>修改</LinkButton>
 
             </span>
